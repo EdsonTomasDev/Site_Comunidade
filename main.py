@@ -1,14 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "<p>Olá tá tudo funcionando bem! Tô sabendo muito mesmo!</p>"
+    return render_template("home.html")
 
 @app.route("/contato")
 def contato():
-    return "okQualquer dúvida entre em contato conosco pelo e-mail contato@contato.com"
+    return render_template("contato.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
