@@ -3,8 +3,14 @@
 
 {%  block body %}
     <div class="container">
-        <h1>Olá tá tudo funcionando bem!</h1>
-        <p>Tô sabendo muito mesmo!</p>
+        <h1>Usuários</h1>
+
+        {% for usuario in lista_usuarios:%}
+            {{usuario}}<br>
+
+
+        {% endfor %}
+
 
     </div>
 {% endblock %}
