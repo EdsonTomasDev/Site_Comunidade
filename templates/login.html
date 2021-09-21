@@ -5,9 +5,20 @@
         <div class="row">
             <div class="col">
                 <h1>Login</h1>
+                {{ form_login.email }}
+                {{ form_login.senha }}
+                {{ form_login.botao_submit_login }}
+
             </div>
             <div class="col">
                 <h1>Criar conta</h1>
+                {{ form_criar_conta.username }}
+                {{ form_criar_conta.email }}
+                {{ form_criar_conta.senha }}
+                {{ form_criar_conta.confirmacao }}
+                {{ form_criar_conta.botao_submit_criarconta }}
+
+
             </div>
 
         </div>
