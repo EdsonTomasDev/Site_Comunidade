@@ -3,11 +3,11 @@ from datetime import datetime
 #CRIAR FUNÇÃO PARA FAZER LOGIN-INÍCIO
 from flask_login import UserMixin
 
-
+#CRIAR FUNÇÃO PARA FAZER LOGIN-FIM
 @login_manager.user_loader
 def load_usuario(id_usuario):
     return Usuario.query.get(int(id_usuario))
-#CRIAR FUNÇÃO PARA FAZER LOGIN-FIM
+
 
 
 class Usuario(database.Model, UserMixin):

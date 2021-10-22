@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.forms import FormLogin, FormCriarConta
 from comunidadeimpressionadora.models import Usuario
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 lista_usuarios = ['Lira', 'João', 'Alon', 'Alessandra', 'Amanda']
 
@@ -19,6 +19,7 @@ def contato():
 
 
 @app.route('/usuarios')
+@login_required
 def usuarios():
     return render_template('usuarios.html', lista_usuarios=lista_usuarios)
 
@@ -36,7 +37,13 @@ def login():
         if usuario and bcrypt.check_password_hash(usuario.senha, form_login.senha.data):
             login_user(usuario, remember=form_login.lembrar_dados.data)
             flash(f'Login realizado com sucesso no e-mail {form_login.email.data}!', 'alert-success')
-            return redirect(url_for('home'))
+            #VERIFICAR SE EXISTE O PARÂMETRO NEXT PARA REDIRECIONAR A PÁGINA PARA ELE, EM CASO
+            #DE O USUÁRIO TENHA SIDO REDIRECIONADO PARA A PÁGINA LOGIN POR ESTAR SEM LOGIN FEIRO
+            par_next = request.args.get('next')
+            if par_next:
+                return redirect(par_next)
+            else:
+                return redirect(url_for('home'))
         else:
             flash(f'falha do login, e-mail ou senha incorretos', 'alert-danger')
 
@@ -53,6 +60,7 @@ def login():
 
 
 @app.route('/sair')
+@login_required
 def sair():
     logout_user()
     flash('Logout feito com sucesso', 'alert-success')
@@ -60,11 +68,13 @@ def sair():
 
 
 @app.route('/perfil')
+@login_required
 def perfil():
     return render_template("perfil.html")
 
 
 @app.route('/post/criar')
+@login_required
 def criar_post():
     return render_template("criarpost.html")
 

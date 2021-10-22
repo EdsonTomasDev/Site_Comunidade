@@ -25,3 +25,4 @@ class FormLogin(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired(), Length(6, 20)])
     lembrar_dados = BooleanField('Lembrar dados de acesso')
     botao_submit_login = SubmitField('Fazer Login')
+
