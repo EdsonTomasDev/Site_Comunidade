@@ -1,7 +1,7 @@
 import flask_bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
-from comunidadeimpressionadora.forms import FormLogin, FormCriarConta
+from comunidadeimpressionadora.forms import FormLogin, FormCriarConta, FormEditarPerfil
 from comunidadeimpressionadora.models import Usuario
 from flask_login import login_user, logout_user, current_user, login_required
 
@@ -38,7 +38,7 @@ def login():
             login_user(usuario, remember=form_login.lembrar_dados.data)
             flash(f'Login realizado com sucesso no e-mail {form_login.email.data}!', 'alert-success')
             #VERIFICAR SE EXISTE O PARÂMETRO NEXT PARA REDIRECIONAR A PÁGINA PARA ELE, EM CASO
-            #DE O USUÁRIO TENHA SIDO REDIRECIONADO PARA A PÁGINA LOGIN POR ESTAR SEM LOGIN FEIRO
+            #DE O USUÁRIO TENHA SIDO REDIRECIONADO PARA A PÁGINA LOGIN POR ESTAR SEM LOGIN FEITO
             par_next = request.args.get('next')
             if par_next:
                 return redirect(par_next)
@@ -79,4 +79,11 @@ def perfil():
 def criar_post():
     return render_template("criarpost.html")
 
+
+@app.route('/perfil/editar', methods=['GET', 'POST'])
+@login_required
+def editar_perfil():
+    form = FormEditarPerfil()
+    foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
+    return render_template("editar_perfil.html", foto_perfil=foto_perfil, form=form)
 

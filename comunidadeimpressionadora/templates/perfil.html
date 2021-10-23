@@ -12,10 +12,14 @@
                             <div class="d-flex flex-column"> <span class="articles">Cursos</span> <span class="number1">38</span> </div>
                             <div class="d-flex flex-column"> <span class="rating">Posts</span> <span class="number3">8.9</span> </div>
                         </div>
-                        <div class="button mt-2 d-flex flex-row align-items-center"> <button class="btn btn-sm btn-outline-primary w-100">Editar Perfil</button></div>
+                        <div class="button mt-2 d-flex flex-row align-items-center"> <a class="w-100" href="{{ url_for('editar_perfil') }}"> <button class="btn btn-sm btn-outline-primary w-100">Editar Perfil</button></a></div>
                     </div>
                 </div>
             </div>
         </div>
+
+{% block form_editar_prefil %}
+
+{% endblock %}
 
 {% endblock %}

@@ -4,4 +4,4 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-#PAREI NO VIDEO  33. Editando a Página de Perfil - HTML e CSS EM 00:00 MINUTOS
+#PAREI NO VIDEO   35. Carregando a imagem padrão de Perfil EM 00:00 MINUTOS
