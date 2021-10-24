@@ -1,5 +1,6 @@
 #Biblioteca que formata formulários
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from comunidadeimpressionadora.models import Usuario
@@ -32,6 +33,8 @@ class FormEditarPerfil(FlaskForm):
     username = StringField('Nome de Usuário', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()], render_kw={"placeholder": "Digite seu E-mail"})
     botao_submit_editarperfil = SubmitField('Editar Perfil')
+    #VARIÁVEL QUE IRÁ RECEBER A IMAGEM PARA GRAVAR COMO FOTO DE PERFIL DO USUÁRIO
+    foto_perfil = FileField('Atualizar Foto de Perfil', validators=[FileAllowed(['jpg', 'png'])])
 
     # Esta função verifica se já existe usuário com este e-mail cadastrado no banco de dados
     def validate_email(self, email):
