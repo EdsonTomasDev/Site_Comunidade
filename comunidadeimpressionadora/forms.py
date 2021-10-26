@@ -34,7 +34,14 @@ class FormEditarPerfil(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()], render_kw={"placeholder": "Digite seu E-mail"})
     botao_submit_editarperfil = SubmitField('Editar Perfil')
     #VARIÁVEL QUE IRÁ RECEBER A IMAGEM PARA GRAVAR COMO FOTO DE PERFIL DO USUÁRIO
-    foto_perfil = FileField('Atualizar Foto de Perfil', validators=[FileAllowed(['jpg', 'png'])])
+    foto_perfil = FileField('Atualizar Foto de Perfil', validators=[FileAllowed(['jpg', 'png'], 'Somente é permitido arquivos com extensão jpg e png')])
+
+    curso_excel = BooleanField('Excel impressionador')
+    curso_vba = BooleanField('VBA impressionador')
+    curso_powerbi = BooleanField('Power BI impressionador')
+    curso_python = BooleanField('Python impressionador')
+    curso_ppt = BooleanField('Apresentações impressionadoras')
+    curso_sql = BooleanField('SQL impressionador')
 
     # Esta função verifica se já existe usuário com este e-mail cadastrado no banco de dados
     def validate_email(self, email):

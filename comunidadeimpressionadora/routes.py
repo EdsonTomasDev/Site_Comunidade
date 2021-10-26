@@ -4,6 +4,9 @@ from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.forms import FormLogin, FormCriarConta, FormEditarPerfil
 from comunidadeimpressionadora.models import Usuario
 from flask_login import login_user, logout_user, current_user, login_required
+import secrets
+import os
+from PIL import Image
 
 lista_usuarios = ['Lira', 'João', 'Alon', 'Alessandra', 'Amanda']
 
@@ -80,6 +83,25 @@ def criar_post():
     return render_template("criarpost.html")
 
 
+#FUNÇÃO PARA PEGAR A IMAGEM, COMPACTAR E DAR UM NOME ALEATÓRIO PARA NÃO TER O MESMO NOME DE OUTRAS IMAGENS JÁ GRAVADAS
+def salvar_imagem(imagem):
+    #GERAR UM CÓDIGO ALEATÓRIO
+    codigo = secrets.token_hex(8)
+    #PEGAR O NOME E A EXTENSÃO DE ARQUIVO
+    nome, extensao = os.path.splitext(imagem.filename)
+    #ADICIONAR UM CÓDICO ALEATÓRIO NO NOME DA IMAGEM
+    nome_arquivo = nome + codigo + extensao
+    #DEFINE O CAMINHO PARA SALVAR A IMAGEM
+    caminho_completo = os.path.join(app.root_path, 'static/fotos_perfil', nome_arquivo)
+    # REDUZIR O TAMANHO DA IMAGEM
+    tamanho_imagem = (200, 200)
+    imagem_reduzida = Image.open(imagem)
+    imagem_reduzida.thumbnail(tamanho_imagem)
+    # SALVAR A IMAGEM NA PASTA FOTOS_PERFIL
+    imagem_reduzida.save(caminho_completo)
+    return nome_arquivo
+
+
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required
 def editar_perfil():
@@ -88,6 +110,10 @@ def editar_perfil():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
+        #VERIFICA SE A FOTO FOI SELECIONADA
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            current_user.foto_perfil = nome_imagem
         database.session.commit()
         flash('Perfil atualizado com sucesso!', 'alert-success')
         return redirect(url_for('perfil'))

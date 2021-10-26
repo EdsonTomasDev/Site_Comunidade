@@ -55,6 +55,22 @@
 
                                 {% endif %}
                             </div>
+                            <hr>
+                            <p>Cursos</p>
+                            <!--"FOR" PARA EXIBIR OS CAMPOS DO FORMULÁRIO -->
+                            {% for campo in form %}
+                                <!--"IF" PARA VER QUAIS CAMPOS TEM A PALAVRA CURSO NO NOME -->
+                                {% if 'curso_' in campo.name %}
+                                    <div class="form-group">
+                                        {{ campo(class="form-check-input") }}
+                                        {{ campo.label(class="form-check-label") }}
+
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+
+
 
 
                              {{ form.botao_submit_editarperfil (class="btn btn-primary mt-2") }}
