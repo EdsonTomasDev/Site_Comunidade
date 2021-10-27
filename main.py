@@ -4,4 +4,4 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-#PAREI NO VIDEO 38. Salvar e Compactar Imagem no Banco de Dados EM 00:00 MINUTOS.
+#PAREI NO VIDEO 41. Exibindo os Cursos do Usuário EM 00:00 MINUTOS.
