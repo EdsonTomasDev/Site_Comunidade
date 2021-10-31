@@ -1,14 +1,14 @@
 import flask_bcrypt
 from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
-from comunidadeimpressionadora.forms import FormLogin, FormCriarConta, FormEditarPerfil
-from comunidadeimpressionadora.models import Usuario
+from comunidadeimpressionadora.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormCriarPost
+from comunidadeimpressionadora.models import Usuario, Post
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from PIL import Image
 
-lista_usuarios = ['Lira', 'João', 'Alon', 'Alessandra', 'Amanda']
+
 
 
 @app.route("/")
@@ -24,6 +24,7 @@ def contato():
 @app.route('/usuarios')
 @login_required
 def usuarios():
+    lista_usuarios = Usuario.query.all()
     return render_template('usuarios.html', lista_usuarios=lista_usuarios)
 
 
@@ -77,10 +78,18 @@ def perfil():
     return render_template("perfil.html", foto_perfil=foto_perfil)
 
 
-@app.route('/post/criar')
+@app.route('/post/criar', methods=['GET', 'POST'])
 @login_required
 def criar_post():
-    return render_template("criarpost.html")
+    form = FormCriarPost()
+    if form.validate_on_submit():
+        post = Post(titulo=form.titulo.data, corpo=form.corpo.data, autor=current_user)
+        database.session.add(post)
+        database.session.commit()
+        flash('Post criado com sucesso', 'alert-success')
+        return redirect(url_for('home'))
+
+    return render_template("criarpost.html", form=form)
 
 
 #FUNÇÃO PARA PEGAR A IMAGEM, COMPACTAR E DAR UM NOME ALEATÓRIO PARA NÃO TER O MESMO NOME DE OUTRAS IMAGENS JÁ GRAVADAS
@@ -132,6 +141,20 @@ def editar_perfil():
     elif request.method == "GET":
         form.email.data = current_user.email
         form.username.data = current_user.username
+        #PREENCHENDO OS CHECKBOKS DE ACORDO COM O CURSO GRAVADO NO BANCO DE DADOS
+        if 'Excel impressionador' in current_user.cursos:
+            form.curso_excel.data = True
+        if 'VBA impressionador' in current_user.cursos:
+            form.curso_vba = True
+        if 'Power BI impressionador' in current_user.cursos:
+            form.curso_powerbi.data = True
+        if 'Python impressionador' in current_user.cursos:
+            form.curso_python.data = True
+        if 'Apresentações impressionadoras' in current_user.cursos:
+            form.curso_ppt.data = True
+        if 'SQL impressionador' in current_user.cursos:
+            form.curso_sql.data = True
+
     foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
     return render_template("editar_perfil.html", foto_perfil=foto_perfil, form=form)
 

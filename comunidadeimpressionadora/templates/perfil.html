@@ -9,7 +9,13 @@
                     <div class="ml-3 w-100">
                         <h4 class="mb-0 mt-0">{{ current_user.username }}</h4> <span>{{ current_user.email }}</span>
                         <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
-                            <div class="d-flex flex-column"> <span class="articles">Cursos</span> <span class="number1">38</span> </div>
+                            {% if 'Não Informado' in current_user.cursos or current_user.cursos == '' %}
+                                 <div class="d-flex flex-column"> <span class="articles">Cursos</span> <span class="number1">0</span> </div>
+                            {% else %}
+                                 <div class="d-flex flex-column"> <span class="articles">Cursos</span> <span class="number1">{{current_user.cursos.count(';') + 1}}</span> </div>
+                            {% endif %}
+
+
                             <div class="d-flex flex-column"> <span class="rating">Posts</span> <span class="number3">8.9</span> </div>
                         </div>
                         <div class="button mt-2 d-flex flex-row align-items-center"> <a class="w-100" href="{{ url_for('editar_perfil') }}"> <button class="btn btn-sm btn-outline-primary w-100">Editar Perfil</button></a></div>
@@ -17,6 +23,24 @@
                 </div>
             </div>
         </div>
+    <div class="row justify-content-center">
+        <div class="col col-4" style="text-align:center">
+            <strong>Cursos</strong><br>
+
+            {% if current_user.cursos %}
+
+            {% for cursos in current_user.cursos.split(';') %}
+                <button type="button" class="btn btn-success mt-2" disabled>{{cursos}}</button>
+            {% endfor %}
+
+            {% else %}
+                <p>Nenhum Curso Cadastrado :(</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+
 
 {% block form_editar_prefil %}
 
