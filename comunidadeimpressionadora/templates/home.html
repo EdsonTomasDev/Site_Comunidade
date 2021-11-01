@@ -2,9 +2,45 @@
 
 
 {%  block body %}
-    <div class="container">
-        <h1>Olá tá tudo funcionando bem!</h1>
-        <p>Tô sabendo muito mesmo!</p>
+    <div class="container mt-3">
+        <h1 style="color:orange">Comunidade Impressionadora</h1>
+        <h2>Alunos expert e a galera da hashtag em um só lugar</h2>
+        <hr>
+             {% for conteudo in post %}
+
+        <div class="row border mt-4 p-3 meupost">
+
+
+
+            <div class="col col-3 text-center">
+                <div class="image pe-2"> <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(conteudo.autor.foto_perfil)) }}" class="rounded" width="200"> </div>
+                    <strong>{{conteudo.autor.username}}</strong>
+                <span class="data-hora">Publicado em {{ datetime.strftime(conteudo.data_criacao, '%d/%m/%d às %H:%M') }}</span>
+                     <div class="row justify-content-center">
+
+
+
+                            {% if conteudo.autor.cursos %}
+
+                            {% for cursos in conteudo.autor.cursos.split(';') %}
+                                <button type="button" class="btn btn-success mt-2" disabled>{{cursos}}</button>
+                            {% endfor %}
+
+                            {% else %}
+                                <p>Nenhum Curso Cadastrado :(</p>
+                            {% endif %}
+
+
+                    </div>
+            </div>
+
+            <div class="col col-9">
+                   <h3>{{conteudo.titulo}}</h3>
+                   <p>{{conteudo.corpo}}</p>
+            </div>
+
+        </div>
+             {% endfor %}
 
     </div>
 {% endblock %}

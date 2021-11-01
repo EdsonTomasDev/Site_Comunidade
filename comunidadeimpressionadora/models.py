@@ -1,5 +1,6 @@
 from comunidadeimpressionadora import database, login_manager
 from datetime import datetime
+from pytz import timezone
 #CRIAR FUNÇÃO PARA FAZER LOGIN-INÍCIO
 from flask_login import UserMixin
 
@@ -7,6 +8,13 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_usuario(id_usuario):
     return Usuario.query.get(int(id_usuario))
+
+
+def data_hora():
+    data_e_hora = datetime.now()
+    fuso_horario = timezone("America/Sao_Paulo")
+    data_e_hora_atuais = data_e_hora.astimezone(fuso_horario)
+    return data_e_hora_atuais
 
 
 
