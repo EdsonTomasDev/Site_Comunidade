@@ -14,7 +14,9 @@ from datetime import datetime
 
 @app.route("/")
 def home():
-    post = Post.query.order_by(Post.id.desc())
+    page = request.args.get('page', 1, type=int)
+    post = Post.query.order_by(Post.id.desc()).paginate(page=page, per_page=5)
+    #post = Post.query.order_by(Post.id.desc())
 
     return render_template("home.html", post=post, datetime=datetime)
 
@@ -160,4 +162,12 @@ def editar_perfil():
 
     foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
     return render_template("editar_perfil.html", foto_perfil=foto_perfil, form=form)
+
+
+@app.route("/post/<post_id>")
+def exibir_post(post_id):
+    post = Post.query.get(post_id)
+    return render_template("post.html", post=post, datetime=datetime)
+
+
 

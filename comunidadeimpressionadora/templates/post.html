@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{%  block body %}
+    <div class="container mt-3">
+
+
+
+        <div class="row border mt-4 p-3 meupost">
+
+
+
+            <div class="col col-3 text-center">
+                <div class="image pe-2"> <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(post.autor.foto_perfil)) }}" class="rounded" width="200"> </div>
+                    <strong>{{post.autor.username}}</strong>
+                <span class="data-hora">Publicado em {{ datetime.strftime(post.data_criacao, '%d/%m/%d às %H:%M') }}</span>
+                     <div class="row justify-content-center">
+
+
+
+                            {% if post.autor.cursos %}
+
+                            {% for cursos in post.autor.cursos.split(';') %}
+                                <button type="button" class="btn btn-success mt-2" disabled>{{cursos}}</button>
+                            {% endfor %}
+
+                            {% else %}
+                                <p>Nenhum Curso Cadastrado :(</p>
+                            {% endif %}
+
+
+                    </div>
+            </div>
+
+            <div class="col col-9">
+                   <h3>{{post.titulo}}</h3>
+                   <p>{{post.corpo}}</p>
+            </div>
+
+        </div>
+
+
+    </div>
+{% endblock %}

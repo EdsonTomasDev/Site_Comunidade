@@ -5,8 +5,23 @@
     <div class="container mt-3">
         <h1 style="color:orange">Comunidade Impressionadora</h1>
         <h2>Alunos expert e a galera da hashtag em um só lugar</h2>
+                    {% for page_num in post.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+
+                        {% if page_num  %}
+
+                                {% if post.page == page_num %}
+                                     <a class="btn btn-info mb-1" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+                                {% else %}
+                                     <a class="btn btn-outline-info mb-1" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+
+                                {% endif %}
+                       {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+
         <hr>
-             {% for conteudo in post %}
+             {% for conteudo in post.items %}
 
         <div class="row border mt-4 p-3 meupost">
 
@@ -35,12 +50,28 @@
             </div>
 
             <div class="col col-9">
-                   <h3>{{conteudo.titulo}}</h3>
+                   <a style="text-decoration: none; color: #000;" href="{{url_for('exibir_post', post_id=conteudo.id)}}"><h3>{{conteudo.titulo}}</h3></a>
                    <p>{{conteudo.corpo}}</p>
             </div>
 
         </div>
              {% endfor %}
+
+                     {% for page_num in post.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+
+                        {% if page_num  %}
+
+                                {% if post.page == page_num %}
+                                     <a class="btn btn-info mb-4" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+                                {% else %}
+                                     <a class="btn btn-outline-info mb-4" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+
+                                {% endif %}
+                       {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+
 
     </div>
 {% endblock %}
